@@ -10,7 +10,7 @@ export default function (state = Immutable.Map({}), action) {
       });
       return newState;
     case actionTypes.ADD_TODO:
-      return state.set(action.id, action.item);
+      return state.set(action.id, Immutable.fromJS(action.todo));
       break;
     case actionTypes.COMPLETE_TODO:
       return state.delete(action.id);

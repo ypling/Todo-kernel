@@ -1,21 +1,40 @@
+import request from '../request';
+import * as querys from '../request/todos';
+import * as actionTypes from '../constants/actionTypes';
 
-export default function (state = Immutable.Map({}), action) {
-  let newState;
-  switch (action.type) {
-    case actionTypes.GET_TODOS:
-      newState = state;
-      action.todos.forEach(todo => {
-        newState = newState.set(todo.id, Immutable.fromJS(todo));
+export function getTodos() {
+  return dispatch => {
+    return request(querys.GetTodos).then(({todos}) => {
+      dispatch({
+        type: actionTypes.GET_TODOS,
+        todos
       });
-      return newState;
-    case actionTypes.ADD_TODO:
-      return state.set(action.id, action.item);
-      break;
-    case actionTypes.COMPLETE_TODO:
-      return state.delete(action.id);
-      break;
-    default:
-      return state;
-      break;
+      return todos.map(todo => todo.id);
+    })
+  }
+}
+
+export function addTodo({content}){
+  return dispatch => {
+    return request(querys.AddTodo, {content}).then(({todo}) => {
+      dispatch({
+        type: actionTypes.ADD_TODO,
+        id: todo.id,
+        todo: todo
+      });
+      return todo.id;
+    })
+  }
+}
+
+export function completeTodo({id}){
+  return dispatch => {
+    return request(querys.CompleteTodo, {id}).then(({id}) => {
+      dispatch({
+        type: actionTypes.COMPLETE_TODO,
+        id
+      });
+      return id;
+    })
   }
 }
