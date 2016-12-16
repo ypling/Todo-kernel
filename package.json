@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "sever": "nodemon --exec babel-node sever/main.js",
-    "web": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js ",
+    "web": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

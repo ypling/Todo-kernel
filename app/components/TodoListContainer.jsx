@@ -1,9 +1,9 @@
 /**
  * Created by leonardli on 11/24/16.
  */
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {getTodos, addTodo, completeTodo} from '../../client/actions/todosActions';
+import React, {Component, PropTypes} from "react";
+import {connect} from "react-redux";
+import {fetchTodos, addTodo, completeTodo} from "../../client/actions/todosActions";
 
 class TodoListContainer extends Component {
   constructor(props, context) {
@@ -14,15 +14,11 @@ class TodoListContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getTodos()).then(todoIds => {
-      this.setState({todoIds});
-    });
+    this.props.dispatch(fetchTodos())
   }
 
   addClickHandler = () => {
-    this.props.dispatch(addTodo({content: this._input.value})).then(todoId => {
-      this.setState({todoIds: this.state.todoIds.concat(todoId)});
-    })
+    this.props.dispatch(addTodo({content: this._input.value}))
   };
 
   completeClickHandler = (id) => {
@@ -32,14 +28,12 @@ class TodoListContainer extends Component {
   render() {
     return (
       <div>
-        {this.state.todoIds.map(id => {
-          if (this.props.todos.get(id)) {
-            return (
-              <div key={id}>
-                {this.props.todos.getIn([id, 'content'])}
-                <span onClick={this.completeClickHandler.bind(this, id)}> x </span>
-              </div>)
-          }
+        {this.props.todos.toArray().map(todo => {
+          return (
+            <div key={todo.get('id')}>
+              {todo.get('content')}
+              <span onClick={this.completeClickHandler.bind(this, todo.get('id'))}> X </span>
+            </div>)
         })}
         <input
           type="text"

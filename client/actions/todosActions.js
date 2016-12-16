@@ -2,39 +2,36 @@ import request from '../request';
 import * as querys from '../request/todos';
 import * as actionTypes from '../constants/actionTypes';
 
-export function getTodos() {
+export function fetchTodos() {
   return dispatch => {
-    return request(querys.GetTodos).then(({todos}) => {
+    request(querys.GetTodos).then(({todos}) => {
       dispatch({
         type: actionTypes.GET_TODOS,
         todos
       });
-      return todos.map(todo => todo.id);
     })
   }
 }
 
 export function addTodo({content}){
   return dispatch => {
-    return request(querys.AddTodo, {content}).then(({todo}) => {
+    request(querys.AddTodo, {content}).then(({todo}) => {
       dispatch({
         type: actionTypes.ADD_TODO,
         id: todo.id,
         todo: todo
       });
-      return todo.id;
     })
   }
 }
 
 export function completeTodo({id}){
   return dispatch => {
-    return request(querys.CompleteTodo, {id}).then(({id}) => {
+    request(querys.CompleteTodo, {id}).then(({id}) => {
       dispatch({
         type: actionTypes.COMPLETE_TODO,
         id
       });
-      return id;
     })
   }
 }
